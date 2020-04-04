@@ -4,12 +4,10 @@
 #
 set -eu
 
-# Assume latest OCaml
-eval $(opam env)
-make test
-
-# Test with oldest version of OCaml supported
-make clean
-opam switch 4.02
-eval $(opam env)
-make test
+for switch in $(cat .circle-ci/opam-switches); do
+  echo "Testing with opam switch $switch"
+  git clean -dfx
+  opam switch "$switch"
+  eval $(opam env)
+  make test
+done
