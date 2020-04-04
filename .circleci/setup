@@ -4,6 +4,8 @@
 #
 set -eu
 
+sudo apt install m4
+
 opam repo add -k git github https://github.com/ocaml/opam-repository.git
 opam update
 opam install -y sexplib
