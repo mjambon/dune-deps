@@ -1,4 +1,4 @@
-# dune-deps
+# dune-deps ![CircleCI badge](https://circleci.com/gh/mjambon/dune-deps.svg?style=svg)
 
 Show the internal dependencies in your OCaml/Reason/Dune project.
 
