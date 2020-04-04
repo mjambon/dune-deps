@@ -46,3 +46,14 @@ transformation is called
 [transitive reduction](https://en.wikipedia.org/wiki/Transitive_reduction)
 and is performed by `tred`, normally installed as part of the Graphviz
 suite.
+
+Project status
+==
+
+Dune-deps was initiated by Martin Jambon (@mjambon).
+It is distributed free of charge under the terms of a
+[BSD license](LICENSE).
+
+Software maintenance takes time, skill, and effort. Please
+contribute to open-source projects to the best of
+your ability. Talk to your employer about it today.
