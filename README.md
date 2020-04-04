@@ -50,7 +50,7 @@ suite.
 Project status
 ==
 
-Dune-deps was initiated by Martin Jambon (@mjambon).
+Dune-deps was initiated by Martin Jambon.
 It is distributed free of charge under the terms of a
 [BSD license](LICENSE).
 
