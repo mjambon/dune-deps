@@ -1,0 +1,8 @@
+#! /bin/bash
+#
+# Setup script for building and testing the project
+#
+set -eu
+
+eval $(opam env)
+make test

@@ -10,4 +10,4 @@ jobs:
     steps:
       - checkout
       - run: ./.circleci/setup
-      - run: make test
+      - run: ./.circleci/run-test
