@@ -8,4 +8,4 @@ sudo apt-get install m4 -y
 
 opam repo add -k git github https://github.com/ocaml/opam-repository.git
 opam update
-opam install -y sexplib
+opam install -y dune sexplib
