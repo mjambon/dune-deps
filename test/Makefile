@@ -16,3 +16,11 @@ output:
 .PHONY: render
 render: output
 	dot -Tpng proj.dot -o proj.png
+
+# Same, but with transitive reduction for a more readable graph.
+# This is the example that we show in the readme.
+#
+.PHONY: demo
+demo: output
+	tred < proj.dot > proj.tred.dot
+	dot -Tpng proj.tred.dot -o proj.tred.png

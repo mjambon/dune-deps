@@ -13,7 +13,7 @@ $ dune-deps | tred > deps.dot
 $ dot -Tpng deps.dot -o deps.png
 ```
 
-[insert graph]
+![sample graph visualization](demo.png)
 
 Installation
 ==

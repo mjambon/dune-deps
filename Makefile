@@ -19,3 +19,12 @@ test: build
 .PHONY: install
 install:
 	dune install
+
+.PHONY: demo
+demo:
+	$(MAKE) -C test demo
+	cp test/proj.tred.png demo.png
+
+.PHONY: clean
+clean:
+	git clean -dfX
