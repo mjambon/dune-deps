@@ -1,0 +1,9 @@
+#! /bin/bash
+#
+# Setup script for building and testing the project
+#
+set -eu
+
+opam repo add -k git github https://github.com/ocaml/opam-repository.git
+opam update
+opam install -y sexplib

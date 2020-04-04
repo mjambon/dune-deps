@@ -1,0 +1,13 @@
+#
+# Circle CI configuration. Runs each time we push a new commit to Github.
+#
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: ocaml/opam2:debian-stable
+    working_directory: ~/dune-deps
+    steps:
+      - checkout
+      - run: ./.circleci/setup
+      - run: make test
