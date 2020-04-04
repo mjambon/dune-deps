@@ -3,14 +3,10 @@ maintainer: "martin@mjambon.com"
 authors: ["Martin Jambon"]
 homepage: "https://github.com/mjambon/dune-deps"
 bug-reports: "https://github.com/mjambon/dune-deps/issues"
-dev-repo: "https://github.com/mjambon/dune-deps.git"
+dev-repo: "git+https://github.com/mjambon/dune-deps.git"
 
 build: [
   ["dune" "build" "-p" name "-j" jobs]
-]
-
-test: [
-  [make "test"]
 ]
 
 install: [
@@ -22,3 +18,16 @@ depends: [
   "ocaml"
   "sexplib"
 ]
+
+synopsis: "Show dependency graph of a multi-component dune project"
+
+description: """
+Dune-deps scans a dune project and produces a dependency graph
+which can be rendered with 'dot'. It is useful for projects that define
+multiple libraries or executables. It allows the developer to visualize
+the dependencies between the various components of a project.
+"""
+
+url {
+  src: "git+https://github.com/mjambon/dune-deps"
+}
