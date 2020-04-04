@@ -1,0 +1,4 @@
+; 'proj' is our test input containing fake and broken 'dune' files.
+; It's not meant to be built.
+;
+(dirs :standard \ proj)

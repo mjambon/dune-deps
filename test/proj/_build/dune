@@ -1,0 +1,5 @@
+; This dune file is under _build/ and should be ignored by dune-deps
+
+(library
+  (public_name ignore_me)
+)

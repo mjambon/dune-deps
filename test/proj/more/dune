@@ -1,0 +1,6 @@
+; Another test dune file, to be sure all dune files are found recursively.
+
+(library
+  (public_name more)
+  (libraries lib1)
+)
