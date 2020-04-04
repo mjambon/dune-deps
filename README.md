@@ -18,7 +18,7 @@ $ dot -Tpng deps.dot -o deps.png
 Installation
 ==
 
-From opam (TODO):
+From opam:
 
 ```
 $ opam update
