@@ -17,7 +17,7 @@ let extract_node_kind entry : Graph.Node.kind option =
 
 let find_list names sexp_list =
   let found =
-    List.filter_map (function
+    Compat.List.filter_map (function
       | List [Atom s; List data]
       | List (Atom s :: data) when List.mem s names -> Some data
       | _ -> None
@@ -28,7 +28,7 @@ let find_list names sexp_list =
   | ll -> Some (List.flatten ll)
 
 let extract_strings sexp_list =
-  List.filter_map (function
+  Compat.List.filter_map (function
     | Atom s -> Some s
     | List _ -> None
   ) sexp_list

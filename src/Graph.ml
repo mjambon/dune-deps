@@ -60,7 +60,7 @@ type t = Node.t list
 let add_node tbl node =
   let open Node in
   let name = node.name in
-  match Hashtbl.find_opt tbl name with
+  match Compat.Hashtbl.find_opt tbl name with
   | Some node2 ->
       (* not sure what to do here other than fail *)
       failwith (
