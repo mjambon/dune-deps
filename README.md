@@ -13,14 +13,15 @@ $ dune-deps | tred > deps.dot
 $ dot -Tpng deps.dot -o deps.png
 ```
 
-This is the graph we obtain for the
-[source code of opam](https://github.com/ocaml/opam):
-
-![graph obtained for the opam project](opam-deps.png)
-
-Dependency graph of dune-deps itself:
+Running dune-deps on itself gives us this dependency graph:
 
 ![graph for dune-deps itself](deps.png)
+
+This is the graph we obtain for the
+[source code of opam](https://github.com/ocaml/opam), an elaborate
+project of over 50K lines of code:
+
+![graph obtained for the opam project](opam-deps.png)
 
 Installation
 ==
