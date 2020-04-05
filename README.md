@@ -13,7 +13,10 @@ $ dune-deps | tred > deps.dot
 $ dot -Tpng deps.dot -o deps.png
 ```
 
-![sample graph visualization](demo.png)
+This is the graph we obtain for the
+[source code of opam](https://github.com/ocaml/opam):
+
+![graph obtained for the opam project](opam-deps.png)
 
 Installation
 ==
