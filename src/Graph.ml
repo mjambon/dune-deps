@@ -15,8 +15,8 @@ module Name = struct
     | Lib name -> "lib:" ^ name
 
   let kind = function
-    | Exe _ -> "executable"
-    | Lib _ -> "library"
+    | Exe _ -> "an executable"
+    | Lib _ -> "a library"
 
   let name_only = function
     | Exe name
@@ -64,7 +64,7 @@ let add_node tbl node =
   | Some node2 ->
       (* not sure what to do here other than fail *)
       failwith (
-        sprintf "Files %s and %s both define a %s named %s."
+        sprintf "Files %s and %s both define %s named %s."
           node.loc node2.loc (Name.kind name) (Name.name_only name)
       )
   | None ->
