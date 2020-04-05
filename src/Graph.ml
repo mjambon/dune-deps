@@ -17,13 +17,15 @@ end
 
 (* A node identifier. *)
 module Name = struct
+  type exe = {
+    id : string;    (* unique identifier *)
+    label : string; (* what's gets displayed, not necessarily
+                       unique. *)
+  }
+
   (* An executable or a library. *)
   type t =
-    | Exe of {
-      id : string;    (* unique identifier *)
-      label : string; (* what's gets displayed, not necessarily
-                         unique. *)
-    }
+    | Exe of exe
     | Lib of string (* both the unique ID among libraries
                        and the library name. *)
 
