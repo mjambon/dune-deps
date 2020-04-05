@@ -18,6 +18,10 @@ This is the graph we obtain for the
 
 ![graph obtained for the opam project](opam-deps.png)
 
+Dependency graph of dune-deps itself:
+
+![graph for dune-deps itself](deps.png)
+
 Installation
 ==
 

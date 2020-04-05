@@ -23,3 +23,12 @@ install:
 .PHONY: clean
 clean:
 	git clean -dfX
+
+# You can stick this section in your own project if you wish.
+# 'make graph' produces a image that can be included in 'README.md'.
+#
+.PHONY: graph deps.png
+graph: deps.png
+deps.png:
+	dune-deps src | tred > deps.dot
+	dot -Tpng deps.dot -o deps.png
