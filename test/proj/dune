@@ -41,3 +41,13 @@
   (name lib-or-exe)
   (libraries lib-or-exe)
 )
+
+(executable
+  (name not-unique)
+  (libraries lib1)
+)
+
+(executable
+  (name not-unique)
+  (libraries lib1-alt)
+)

@@ -4,23 +4,40 @@
 
 open Printf
 
+(* The location of a node declaration. *)
+module Loc = struct
+  type t = {
+    path : string; (* path to the dune file *)
+    index : int;   (* sequential ID within the dune file *)
+  }
+
+  let id {path; index} = sprintf "%s:%i" path index
+  let path loc = loc.path
+end
+
 (* A node identifier. *)
 module Name = struct
   (* An executable or a library. *)
-  type t = Exe of string | Lib of string
+  type t =
+    | Exe of {
+      id : string;    (* unique identifier *)
+      label : string; (* what's gets displayed, not necessarily
+                         unique. *)
+    }
+    | Lib of string (* both the unique ID among libraries
+                       and the library name. *)
 
-  (* This is meant as node ID. *)
-  let to_string = function
-    | Exe name -> "exe:" ^ name
+  let id = function
+    | Exe x -> "exe:" ^ x.id
     | Lib name -> "lib:" ^ name
 
   let kind = function
     | Exe _ -> "an executable"
     | Lib _ -> "a library"
 
-  let name_only = function
-    | Exe name
-    | Lib name -> name
+  let label = function
+    | Exe {label; _}
+    | Lib label -> label
 
   let num_kind = function
     | Exe _ -> 0
@@ -30,7 +47,7 @@ module Name = struct
     let c = num_kind a - num_kind b in
     if c <> 0 then c
     else
-      String.compare (name_only a) (name_only b)
+      String.compare (label a) (label b)
 end
 
 (* A node with its outgoing edges (dependencies). *)
@@ -47,7 +64,7 @@ module Node = struct
     deps : string list;
 
     (* Path to the original 'dune' file. For error reporting. *)
-    loc : string;
+    loc : Loc.t;
   }
 end
 
@@ -65,7 +82,10 @@ let add_node tbl node =
       (* not sure what to do here other than fail *)
       failwith (
         sprintf "Files %s and %s both define %s named %s."
-          node.loc node2.loc (Name.kind name) (Name.name_only name)
+          (Loc.path node.loc)
+          (Loc.path node2.loc)
+          (Name.kind name)
+          (Name.label name)
       )
   | None ->
       Hashtbl.add tbl name node

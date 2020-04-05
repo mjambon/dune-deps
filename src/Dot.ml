@@ -17,7 +17,7 @@ let quote buf s =
   Buffer.add_char buf '"'
 
 let node_attributes buf (node : Graph.Node.t) =
-  let label = Graph.Name.name_only node.name in
+  let label = Graph.Name.label node.name in
   match node.kind with
   | Lib -> bprintf buf " [label=%a]" quote label
   | Exe -> bprintf buf " [label=%a,shape=diamond]" quote label
@@ -25,14 +25,14 @@ let node_attributes buf (node : Graph.Node.t) =
 
 let print_node buf (node : Graph.Node.t) =
   bprintf buf "  %a%a\n"
-    quote (Graph.Name.to_string node.name)
+    quote (Graph.Name.id node.name)
     node_attributes node
 
 let print_edges buf (node : Graph.Node.t) =
   List.iter (fun dep_name ->
     bprintf buf "  %a -> %a\n"
-      quote (Graph.Name.to_string node.name)
-      quote (Graph.Name.to_string (Graph.Name.Lib dep_name))
+      quote (Graph.Name.id node.name)
+      quote (Graph.Name.id (Graph.Name.Lib dep_name))
   ) node.deps
 
 let print_graph (nodes : Graph.Node.t list) =
