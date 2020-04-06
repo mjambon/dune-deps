@@ -14,7 +14,7 @@ build:
 .PHONY: test
 test: build
 	ln -sf ../_build/install/default/bin/dune-deps test/
-	dune exec src/test/unit_tests.exe
+	dune exec src/test/test.exe
 	$(MAKE) -C test
 
 .PHONY: install

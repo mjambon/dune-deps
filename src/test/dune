@@ -1,4 +1,4 @@
 (executable
-  (name unit_tests)
-  (libraries dune_deps)
+  (name test)
+  (libraries dune_deps alcotest)
 )
