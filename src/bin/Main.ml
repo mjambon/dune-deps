@@ -3,6 +3,7 @@
 *)
 
 open Printf
+open Dune_deps
 
 let usage_msg =
   "\

@@ -1,5 +1,5 @@
 (executable
   (public_name dune-deps)
   (name Main)
-  (libraries sexplib)
+  (libraries dune_deps)
 )

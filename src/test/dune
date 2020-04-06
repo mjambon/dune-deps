@@ -1,0 +1,4 @@
+(executable
+  (name unit_tests)
+  (libraries dune_deps)
+)
