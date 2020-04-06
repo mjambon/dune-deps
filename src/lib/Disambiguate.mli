@@ -14,3 +14,6 @@
     was not registered.
 *)
 val create : string list -> (string -> string option)
+
+(** Map each path to a good name. This is intended for testing purposes. *)
+val map : string list -> string list

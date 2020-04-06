@@ -61,10 +61,17 @@ let make_clusters kv_list =
   List.iter (fun (k, v) -> add clus k v) kv_list;
   clus
 
+let concat l = String.concat " " l
+
 let extend_name name (full_path, rest) =
   match rest with
-  | [] -> assert false
-  | dir :: parents -> (name @ [dir], (full_path, parents))
+  | [] ->
+      (* don't extend because we can't, for this particular path *)
+      (name, (full_path, rest))
+  | dir :: parents ->
+      printf "extend [%s] with %s (full path: [%s])\n%!"
+        (concat name) dir (concat full_path);
+      (name @ [dir], (full_path, parents))
 
 (* Separate unique names (singletons) from other clusters (others). *)
 let remove_singletons (clus : clus) =
@@ -86,8 +93,13 @@ let extend_paths full_paths =
         let singletons, clusters = remove_singletons clus in
         loop (singletons @ acc) clusters
   in
+  let init full_path =
+    match full_path with
+    | name :: parents -> ([name], (full_path, parents))
+    | [] -> ([], (full_path, []))
+  in
   let clusters =
-    List.map (fun full_path -> ([], (full_path, full_path))) full_paths
+    List.map init full_paths
   in
   loop [] clusters
 
@@ -115,3 +127,10 @@ let create paths =
   in
   simplify
 
+let map paths =
+  let simplify = create paths in
+  List.map (fun path ->
+    match simplify path with
+    | Some name -> name
+    | None -> assert false
+  ) paths
