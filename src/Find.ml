@@ -32,5 +32,5 @@ let find ~accept_file_name ~accept_dir_name root_dir =
 let find_dune_files proj_dir =
   find
     ~accept_file_name:(fun name -> name = "dune")
-    ~accept_dir_name:(fun name -> name <> "_build")
+    ~accept_dir_name:(fun name -> name <> "_build" && name <> "_opam")
     proj_dir
