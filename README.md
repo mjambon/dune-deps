@@ -60,10 +60,9 @@ Usage scenarios
 How big is this project?
 --
 
-This is answered by producing a graph for the whole project without
-knowing anything about it. This graph
-may be unreadable, but it gives a sense of the project's complexity.
-Use the canonical command pipeline for this:
+Produce a graph for the whole project without knowing anything about
+it. This graph may be unreadable, but it gives a sense of the
+project's complexity. Use the canonical command pipeline for this:
 
 ```
 $ cd my-project
@@ -87,7 +86,7 @@ tangled up.
 as performed by `tred` helps with that but is not always sufficient.
 
 For better results, you can build a graph only for selected
-components. This is achieved by specifying `dune` files or selected
+components. Specify `dune` files or selected
 subfolders directly on the command line. Something like this:
 
 ```
