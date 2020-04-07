@@ -1,11 +1,14 @@
 (**
-   Identify the shortest unique path for identifying a file.
+   Disambiguate path-like names, similarly to what emacs does for buffer
+   names.
 
    This is meant for disambiguating private executables.
    If two executables are called 'main', we want to display just enough
    of their path so they appear unique. For example,
    'src/foo/bar/bin/main' and 'src/baz/bin/main' would be shown
    'main<bar/bin>' and 'main<baz/bin>'.
+
+   It allows us to pick short and informative labels to put on graph nodes.
 *)
 
 (** [create paths] registers a list of file paths and creates a function

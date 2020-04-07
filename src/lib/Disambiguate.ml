@@ -1,5 +1,5 @@
 (*
-   Disambiguate file paths.
+   Disambiguate path-like names.
 *)
 
 open Printf
