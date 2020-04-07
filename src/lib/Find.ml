@@ -40,8 +40,10 @@ let find ~accept_file_name ~accept_dir_name visit_tracker root =
             acc
           else
             let children =
-              Sys.readdir path
-              |> Array.to_list
+              let a = Sys.readdir path in
+              (* sort elements so as to obtain reproducible test results *)
+              Array.sort String.compare a;
+              Array.to_list a
               |> List.map (fun name -> Filename.concat path name)
             in
             List.fold_left find acc children
