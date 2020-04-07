@@ -1,0 +1,4 @@
+(library
+  (name dune_deps)
+  (libraries sexplib str)
+)

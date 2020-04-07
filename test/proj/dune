@@ -43,11 +43,13 @@
 )
 
 (executable
-  (name not-unique)
+  (name test)
   (libraries lib1)
 )
 
+; Other executable with the same path. Don't know if that's even possible
+; with dune.
 (executable
-  (name not-unique)
+  (name test)
   (libraries lib1-alt)
 )
