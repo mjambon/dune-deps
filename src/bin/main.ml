@@ -3,28 +3,16 @@
 *)
 
 open Printf
+open Cmdliner
 open Dune_deps
 
-let usage_msg =
-  "\
-Usage: dune-deps [PROJECT_DIR]
-
-dune-deps scans a folder for 'dune' files, extracts the dependencies between
-the libraries and executables that they define, as well as external
-dependencies. The result is a graph in the dot format, printed on standard
-output.
-
-Options:
-  --help  print this help message and exit.
-"
-
-let optimistic_run root_dir =
-  Find.find_dune_files root_dir
+let optimistic_run roots =
+  Find.find_dune_files roots
   |> Dune.load_files
   |> Dot.print_graph
 
-let safe_run root_dir =
-  try optimistic_run root_dir
+let safe_run roots =
+  try optimistic_run roots
   with
   | Failure msg ->
       eprintf "Error: %s\n%!" msg;
@@ -35,16 +23,63 @@ let safe_run root_dir =
         (Printexc.to_string e)
         trace
 
+let roots_term =
+  let info =
+    Arg.info []
+      ~docv:"ROOT"
+      ~doc:"$(docv) can be either a folder in which 'dune' files are to be \
+            found recursively, or simply a 'dune' file. Multiple $(docv) \
+            arguments are supported. If no $(docv) is specified, the current \
+            folder is used."
+  in
+  Arg.value (Arg.pos_all Arg.file [] info)
+
+let cmdline_term =
+  let combine roots (*...*) =
+    match roots with
+    | [] -> ["."]
+    | roots -> roots
+  in
+  Term.(const combine
+        $ roots_term
+       )
+
+let doc =
+  "\
+Extract a dependency graph from a dune project.
+dune-deps scans root folders for 'dune' files and extracts the
+dependencies between the project's libraries, project's executables,
+and their external dependencies. The result is a graph in the dot format,
+printed on standard output.
+"
+
+let man = [
+  `S Manpage.s_examples;
+  `P "You should first install the Graphviz suite of tools. Check for
+      the 'dot' and 'tred' commands. Then a good command to run from
+      your project's root is:";
+  `Pre "dune-deps | tred | dot -Tpng > deps.png";
+  `S Manpage.s_authors;
+  `P "Martin Jambon <martin@mjambon.com>";
+  `S Manpage.s_bugs;
+  `P "Check bug reports at https://github.com/mjambon/dune-deps/issues."
+]
+
+let parse_command_line () =
+  let info =
+    Term.info
+      ~doc
+      ~man
+      "dune-deps"
+  in
+  match Term.eval (cmdline_term, info) with
+  | `Error _ -> exit 1
+  | `Version | `Help -> exit 0
+  | `Ok roots -> roots
+
 let main () =
   Printexc.record_backtrace true;
-  match Sys.argv with
-  | [| _ |] -> safe_run "."
-  | [| _; "--help" |] ->
-      printf "%s%!" usage_msg;
-      exit 0
-  | [| _; root_dir |] -> safe_run root_dir
-  | _ ->
-      eprintf "%s%!" usage_msg;
-      exit 1
+  let roots = parse_command_line () in
+  safe_run roots
 
 let () = main ()

@@ -1,5 +1,8 @@
 (executable
   (public_name dune-deps)
   (name main)
-  (libraries dune_deps)
+  (libraries
+    dune_deps
+    cmdliner
+  )
 )

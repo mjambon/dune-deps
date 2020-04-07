@@ -2,7 +2,8 @@
    Dune file finder.
 *)
 
-let find ~accept_file_name ~accept_dir_name root_dir =
+(* Find dune files starting from root folder or file *)
+let find ~accept_file_name ~accept_dir_name root =
   let rec find acc path =
     let name = Filename.basename path in
     match Sys.is_directory path with
@@ -22,15 +23,18 @@ let find ~accept_file_name ~accept_dir_name root_dir =
         else
           acc
   in
-  find [] root_dir
+  find [] root
 
 (*
-   Recursively find dune files starting from a folder 'proj_dir'.
+   Recursively find dune files starting from a folder 'root'.
    Excludes '_build' folders but doesn't honor exclusion rules specified
    in dune files with (dirs ... \ exclude_me).
 *)
-let find_dune_files proj_dir =
-  find
-    ~accept_file_name:(fun name -> name = "dune")
-    ~accept_dir_name:(fun name -> name <> "_build" && name <> "_opam")
-    proj_dir
+let find_dune_files roots =
+  List.fold_left (fun acc root ->
+    find
+      ~accept_file_name:(fun name -> name = "dune")
+      ~accept_dir_name:(fun name -> name <> "_build" && name <> "_opam")
+      root
+    @ acc
+  ) [] roots
