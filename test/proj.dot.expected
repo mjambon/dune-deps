@@ -1,8 +1,8 @@
 digraph {
   "exe:extra-proj/dune:0" [label="extra",shape=diamond]
   "exe:proj/bar/test/dune:0" [label="test<bar/test>",shape=diamond]
-  "exe:proj/foo/test/dune:0" [label="test<foo/test>",shape=diamond]
   "exe:proj/dune:10" [label="lib-or-exe",shape=diamond]
+  "exe:proj/link-to-foo/test/dune:0" [label="test<link-to-foo/test>",shape=diamond]
   "exe:proj/dune:0" [label="prog1",shape=diamond]
   "exe:proj/dune:1" [label="prog2",shape=diamond]
   "exe:proj/dune:2" [label="prog3",shape=diamond]
@@ -21,8 +21,8 @@ digraph {
   "lib:lib5" [label="lib5"]
   "lib:more" [label="more"]
   "exe:proj/bar/test/dune:0" -> "lib:lib1"
-  "exe:proj/foo/test/dune:0" -> "lib:lib1"
   "exe:proj/dune:10" -> "lib:lib-or-exe"
+  "exe:proj/link-to-foo/test/dune:0" -> "lib:lib1"
   "exe:proj/dune:0" -> "lib:lib1"
   "exe:proj/dune:0" -> "lib:lib2"
   "exe:proj/dune:0" -> "lib:lib3"
