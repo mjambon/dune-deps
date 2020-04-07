@@ -18,9 +18,19 @@ end
 (* A node identifier. *)
 module Name = struct
   type exe = {
-    id : string;    (* unique identifier *)
-    label : string; (* what's gets displayed, not necessarily
-                       unique. *)
+    id : string;
+      (* unique identifier *)
+
+    basename : string;
+      (* the short name of the library or executable, as typically referenced
+         in dune files. It may be ambiguous. *)
+
+    path : string;
+      (* a path-like name that will be used to generate a good node label,
+         such as "src/foo/lib/bar". It may end up being shown as
+         "bar" or "bar<lib>" or "bar<lib/foo>" etc. depending on ambiguities
+         found with other labels.
+      *)
   }
 
   (* An executable or a library. *)
@@ -37,9 +47,13 @@ module Name = struct
     | Exe _ -> "an executable"
     | Lib _ -> "a library"
 
-  let label = function
-    | Exe {label; _}
-    | Lib label -> label
+  let basename = function
+    | Exe {basename; _}
+    | Lib basename -> basename
+
+  let full_name = function
+    | Exe {path; _} -> path
+    | Lib name -> name
 
   let num_kind = function
     | Exe _ -> 0
@@ -49,7 +63,7 @@ module Name = struct
     let c = num_kind a - num_kind b in
     if c <> 0 then c
     else
-      String.compare (label a) (label b)
+      String.compare (full_name a) (full_name b)
 end
 
 (* A node with its outgoing edges (dependencies). *)
@@ -81,13 +95,13 @@ let add_node tbl node =
   let name = node.name in
   match Compat.Hashtbl.find_opt tbl name with
   | Some node2 ->
-      (* not sure what to do here other than fail *)
+      (* should happen only when defining two libraries of the same name *)
       failwith (
         sprintf "Files %s and %s both define %s named %s."
           (Loc.path node.loc)
           (Loc.path node2.loc)
           (Name.kind name)
-          (Name.label name)
+          (Name.full_name name)
       )
   | None ->
       Hashtbl.add tbl name node

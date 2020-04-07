@@ -68,7 +68,10 @@ let read_node path get_index sexp_entry =
               match kind with
               | Graph.Node.Exe ->
                   let id = Graph.Loc.id loc in
-                  Graph.Name.Exe { id; label = name_string }
+                  let basename = name_string in
+                  let path = (* dune file folder + executable name *)
+                    Filename.concat (Filename.dirname path) basename in
+                  Graph.Name.Exe { id; basename; path }
               | Graph.Node.Lib -> Graph.Name.Lib name_string
               | Graph.Node.Ext -> assert false
             in

@@ -61,16 +61,12 @@ let make_clusters kv_list =
   List.iter (fun (k, v) -> add clus k v) kv_list;
   clus
 
-let concat l = String.concat " " l
-
 let extend_name name (full_path, rest) =
   match rest with
   | [] ->
       (* don't extend because we can't, for this particular path *)
       (name, (full_path, rest))
   | dir :: parents ->
-      printf "extend [%s] with %s (full path: [%s])\n%!"
-        (concat name) dir (concat full_path);
       (name @ [dir], (full_path, parents))
 
 (* Separate unique names (singletons) from other clusters (others). *)

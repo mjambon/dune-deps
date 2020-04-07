@@ -5,7 +5,3 @@
   (libraries lib1)
 )
 
-(executable
-  (name not-unique)
-  (libraries more)
-)

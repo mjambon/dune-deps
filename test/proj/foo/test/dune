@@ -1,0 +1,6 @@
+; Test ambiguous executable names
+
+(executable
+  (name test)
+  (libraries lib1)
+)
