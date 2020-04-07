@@ -13,5 +13,5 @@ for switch in $(cat .circleci/opam-switches); do
   opam switch "$switch"
   eval $(opam env)
   opam update
-  opam install -y dune sexplib alcotest
+  opam install -y dune sexplib alcotest cmdliner
 done

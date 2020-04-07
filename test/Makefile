@@ -10,7 +10,7 @@ test: output
 
 .PHONY: output
 output:
-	./dune-deps proj > proj.dot
+	./dune-deps proj extra-proj > proj.dot
 
 # This is for troubleshooting
 .PHONY: render
