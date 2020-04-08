@@ -95,7 +95,7 @@ let load_file path =
   List.map (read_node path get_index) sexp_entries
   |> List.flatten
 
-let load_files paths =
+let load_files ~no_exe ~no_ext paths =
   List.map load_file paths
   |> List.flatten
-  |> Graph.fixup
+  |> Graph.fixup ~no_exe ~no_ext

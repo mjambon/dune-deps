@@ -107,19 +107,43 @@ let add_node tbl node =
       Hashtbl.add tbl name node
 
 (*
-   Identify all dependencies that are not already nodes in the graph,
-   and add them as nodes representing external libraries.
+   Remove edges pointing to external dependencies by rewriting each element
+   of the table (which is a collection of nodes with outgoing edges).
+*)
+let remove_missing_nodes tbl =
+  let nodes =
+    Hashtbl.fold (fun _name (node : Node.t) acc ->
+      let known_deps =
+        List.filter (fun dep_name ->
+          Hashtbl.mem tbl (Name.Lib dep_name)
+        ) node.deps
+      in
+      let node = {
+        node with deps = known_deps
+      } in
+      node :: acc
+    ) tbl []
+  in
+  Hashtbl.clear tbl;
+  List.iter (add_node tbl) nodes
+
+(*
+   Identify all dependencies that are not already nodes in the graph.
+*)
+let extract_missing_deps tbl =
+  let dep_names = Hashtbl.create 100 in
+  Hashtbl.iter (fun _name (node : Node.t) ->
+    List.iter (fun dep_name ->
+      Hashtbl.replace dep_names dep_name node.loc
+    ) node.deps
+  ) tbl;
+  Hashtbl.fold (fun dep_name loc acc -> (dep_name, loc) :: acc) dep_names []
+
+(*
+   Add unknown dependencies as nodes representing external libraries.
 *)
 let add_missing_nodes tbl =
-  let all_deps =
-    let dep_names = Hashtbl.create 100 in
-    Hashtbl.iter (fun _name (node : Node.t) ->
-      List.iter (fun dep_name ->
-        Hashtbl.replace dep_names dep_name node.loc
-      ) node.deps
-    ) tbl;
-    Hashtbl.fold (fun dep_name loc acc -> (dep_name, loc) :: acc) dep_names []
-  in
+  let missing_deps = extract_missing_deps tbl in
   List.iter (fun (dep_name, loc) ->
     let name = Name.Lib dep_name in
     if not (Hashtbl.mem tbl name) then
@@ -136,7 +160,15 @@ let add_missing_nodes tbl =
       add_node tbl node
     else
       ()
-  ) all_deps
+  ) missing_deps
+
+let remove_executables nodes =
+  List.filter (fun (node : Node.t) ->
+    match node.kind with
+    | Exe -> false
+    | Lib
+    | Ext -> true
+  ) nodes
 
 (*
    Complete the graph so as to have explicit nodes for the external
@@ -144,9 +176,18 @@ let add_missing_nodes tbl =
 
    This also checks that there are no duplicate nodes.
 *)
-let fixup nodes =
+let fixup ~no_exe ~no_ext nodes =
+  let nodes =
+    if no_exe then
+      remove_executables nodes
+    else
+      nodes
+  in
   let tbl = Hashtbl.create 100 in
   List.iter (add_node tbl) nodes;
-  add_missing_nodes tbl;
+  if no_ext then
+    remove_missing_nodes tbl
+  else
+    add_missing_nodes tbl;
   let nodes = Hashtbl.fold (fun _name node acc -> node :: acc) tbl [] in
   List.sort (fun (a : Node.t) b -> Name.compare a.name b.name) nodes

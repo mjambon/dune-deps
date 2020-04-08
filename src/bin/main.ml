@@ -6,13 +6,19 @@ open Printf
 open Cmdliner
 open Dune_deps
 
-let optimistic_run roots =
+type config = {
+  roots : string list;
+  no_exe : bool;
+  no_ext : bool;
+}
+
+let optimistic_run {roots; no_exe; no_ext} =
   Find.find_dune_files roots
-  |> Dune.load_files
+  |> Dune.load_files ~no_exe ~no_ext
   |> Dot.print_graph
 
-let safe_run roots =
-  try optimistic_run roots
+let safe_run config =
+  try optimistic_run config
   with
   | Failure msg ->
       eprintf "Error: %s\n%!" msg;
@@ -32,16 +38,30 @@ let roots_term =
             arguments are supported. If no $(docv) is specified, the current \
             folder is used."
   in
-  Arg.value (Arg.pos_all Arg.file [] info)
+  Arg.value (Arg.pos_all Arg.file ["."] info)
+
+let no_exe_term =
+  let info =
+    Arg.info ["no-exe"]
+      ~doc:"Omit executables."
+  in
+  Arg.value (Arg.flag info)
+
+let no_ext_term =
+  let info =
+    Arg.info ["no-ext"]
+      ~doc:"Omit external libraries."
+  in
+  Arg.value (Arg.flag info)
 
 let cmdline_term =
-  let combine roots (*...*) =
-    match roots with
-    | [] -> ["."]
-    | roots -> roots
+  let combine roots no_exe no_ext =
+    { roots; no_exe; no_ext }
   in
   Term.(const combine
         $ roots_term
+        $ no_exe_term
+        $ no_ext_term
        )
 
 let doc =
@@ -78,11 +98,11 @@ let parse_command_line () =
   match Term.eval (cmdline_term, info) with
   | `Error _ -> exit 1
   | `Version | `Help -> exit 0
-  | `Ok roots -> roots
+  | `Ok config -> config
 
 let main () =
   Printexc.record_backtrace true;
-  let roots = parse_command_line () in
-  safe_run roots
+  let config = parse_command_line () in
+  safe_run config
 
 let () = main ()
