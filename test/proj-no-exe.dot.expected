@@ -1,0 +1,22 @@
+digraph {
+  "lib:ext2" [label="ext2",style=filled]
+  "lib:ext3" [label="ext3",style=filled]
+  "lib:lib-or-exe" [label="lib-or-exe"]
+  "lib:lib1" [label="lib1"]
+  "lib:lib2" [label="lib2"]
+  "lib:lib3" [label="lib3"]
+  "lib:lib4" [label="lib4"]
+  "lib:lib5" [label="lib5"]
+  "lib:more" [label="more"]
+  "lib:lib2" -> "lib:lib4"
+  "lib:lib2" -> "lib:lib5"
+  "lib:lib2" -> "lib:ext2"
+  "lib:lib3" -> "lib:lib4"
+  "lib:lib3" -> "lib:lib5"
+  "lib:lib3" -> "lib:ext2"
+  "lib:lib4" -> "lib:lib1"
+  "lib:lib4" -> "lib:ext3"
+  "lib:lib5" -> "lib:lib1"
+  "lib:lib5" -> "lib:ext3"
+  "lib:more" -> "lib:lib1"
+}
