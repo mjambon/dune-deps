@@ -45,27 +45,27 @@ let cmdline_term =
        )
 
 let doc =
-  "\
-Extract a dependency graph from a dune project."
+  "extract a dependency graph from a dune project"
 
 let man = [
-  `S Manpage.s_synopsis;
+  `S Manpage.s_description;
   `P "dune-deps scans root folders for 'dune' files and extracts the \
       dependencies between the project's libraries, project's executables, \
       and their external dependencies. The result is a graph in the dot \
       format, printed on standard output.";
+  `P "For usage suggestions and more, visit \
+      https://github.com/mjambon/dune-deps.";
   `S Manpage.s_examples;
   `P "You should first install the Graphviz suite of tools. Check for
       the 'dot' and 'tred' commands. Then a good command to run from
       your project's root is:";
   `Pre "dune-deps | tred | dot -Tpng > deps.png";
-  `S Manpage.s_description;
-  `P "For usage suggestions and more, visit \
-      https://github.com/mjambon/dune-deps.";
   `S Manpage.s_authors;
   `P "Martin Jambon <martin@mjambon.com>";
   `S Manpage.s_bugs;
-  `P "Check out bug reports at https://github.com/mjambon/dune-deps/issues."
+  `P "Check out bug reports at https://github.com/mjambon/dune-deps/issues.";
+  `S Manpage.s_see_also;
+  `P "dot(1), tred(1)"
 ]
 
 let parse_command_line () =
