@@ -110,7 +110,7 @@ $ dune-deps -h opam-client | tred | dot -Tpng > opam-client.png
 
 ![dependencies and reverse dependencies of opam-client](img/opam-client.png)
 
-Compare this with the full graph of `opam` shown above.
+Compare this with the full graph of the opam project shown above.
 
 Other options are provided for showing only the dependencies, or only
 the reverse dependencies. It is also possible to do so for multiple
