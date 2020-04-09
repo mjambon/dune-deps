@@ -5,11 +5,5 @@
 (**
    Load the specified dune files into a graph that's ready
    to export.
-
-   @param no_exe omit executables from the graph.
-   @param no_ext omit external dependencies from the graph.
 *)
-val load_files :
-  no_exe:bool ->
-  no_ext:bool ->
-  string list -> Filterable.t
+val load_files : string list -> Filterable.t

@@ -2,6 +2,12 @@
    Library of filters over the nodes of directed graphs of type Filterable.t.
 *)
 
+(** Remove all external dependencies from the graph. *)
+val no_ext : Filterable.t -> Filterable.t
+
+(** Remove all executables from the graph. *)
+val no_exe : Filterable.t -> Filterable.t
+
 (** Return the subgraph made of all the nodes reachable from the specified
     start nodes. Nodes are referenced by name, see details in [Filterable].
     Start nodes are marked as important.
