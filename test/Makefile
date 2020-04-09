@@ -14,9 +14,9 @@ test: output
 
 .PHONY: output
 output:
-	./dune-deps proj extra-proj > proj.dot
-	./dune-deps proj extra-proj --no-exe > proj-no-exe.dot
-	./dune-deps proj extra-proj --no-ext > proj-no-ext.dot
+	./dune-deps proj extra-proj -x extra-proj/exclude-me > proj.dot
+	./dune-deps proj --no-exe > proj-no-exe.dot
+	./dune-deps proj --no-ext > proj-no-ext.dot
 	./dune-deps proj --hourglass lib5 -h lib3 > proj-hourglass.dot
 	./dune-deps proj --deps lib3 --revdeps lib5 > proj-deps.dot
 

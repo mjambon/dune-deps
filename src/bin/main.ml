@@ -8,15 +8,16 @@ open Dune_deps
 
 type config = {
   roots : string list;
+  exclude : string list;
   no_exe : bool;
   no_ext : bool;
   deps : string list;
   revdeps : string list;
 }
 
-let optimistic_run {roots; no_exe; no_ext; deps; revdeps} =
+let optimistic_run {roots; exclude; no_exe; no_ext; deps; revdeps} =
   let graph =
-    Find.find_dune_files roots
+    Find.find_dune_files roots ~exclude
     |> Dune.load_files
   in
   let graph =
@@ -56,6 +57,15 @@ let roots_term =
             folder is used."
   in
   Arg.value (Arg.pos_all Arg.file ["."] info)
+
+let exclude_term =
+  let info =
+    Arg.info ["exclude"; "x"]
+      ~docv:"ROOT"
+      ~doc:"Ignore folder or file $(docv) when scanning the file tree \
+            for 'dune' files."
+  in
+  Arg.value (Arg.opt_all Arg.string [] info)
 
 let no_exe_term =
   let info =
@@ -109,14 +119,15 @@ let revdeps_term =
   Arg.value (Arg.opt_all Arg.string [] info)
 
 let cmdline_term =
-  let combine roots no_exe no_ext hourglass deps revdeps =
+  let combine roots exclude no_exe no_ext hourglass deps revdeps =
     let deps, revdeps =
       (deps @ hourglass), (revdeps @ hourglass)
     in
-    { roots; no_exe; no_ext; deps; revdeps }
+    { roots; exclude; no_exe; no_ext; deps; revdeps }
   in
   Term.(const combine
         $ roots_term
+        $ exclude_term
         $ no_exe_term
         $ no_ext_term
         $ hourglass_term

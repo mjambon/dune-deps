@@ -1,5 +1,4 @@
 digraph {
-  "exe:extra-proj/dune:0" [label="extra",shape=diamond]
   "exe:proj/bar/test/dune:0" [label="test<bar/test>",shape=diamond]
   "exe:proj/foo/test/dune:0" [label="test<foo/test>",shape=diamond]
   "exe:proj/dune:10" [label="lib-or-exe",shape=diamond]

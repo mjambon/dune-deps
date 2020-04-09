@@ -61,8 +61,9 @@ let find ~accept_file_name ~accept_dir_name visit_tracker root =
    Excludes '_build' folders but doesn't honor exclusion rules specified
    in dune files with (dirs ... \ exclude_me).
 *)
-let find_dune_files roots =
+let find_dune_files ~exclude roots =
   let visit_tracker = create_visit_tracker () in
+  List.iter visit_tracker.mark_visited exclude;
   List.fold_left (fun acc root ->
     find
       ~accept_file_name:(fun name -> name = "dune")
