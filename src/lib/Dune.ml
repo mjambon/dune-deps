@@ -95,8 +95,8 @@ let load_file path =
   List.map (read_node path get_index) sexp_entries
   |> List.flatten
 
-let load_files ~no_exe ~no_ext paths =
+let load_files paths =
   List.map load_file paths
   |> List.flatten
-  |> Dep_graph.fixup ~no_exe ~no_ext
+  |> Dep_graph.fixup
   |> Filterable.of_dep_graph

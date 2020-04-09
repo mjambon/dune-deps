@@ -1,8 +1,10 @@
 digraph {
+  "lib:ext1" [label="ext1",style=filled]
   "lib:ext2" [label="ext2",style=filled]
   "lib:ext3" [label="ext3",style=filled]
   "lib:lib-or-exe" [label="lib-or-exe"]
   "lib:lib1" [label="lib1"]
+  "lib:lib1-alt" [label="lib1-alt",style=filled]
   "lib:lib2" [label="lib2"]
   "lib:lib3" [label="lib3"]
   "lib:lib4" [label="lib4"]

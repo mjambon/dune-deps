@@ -4,6 +4,10 @@
 
 open Filterable
 
+let no_exe graph = Filterable.filter graph (fun node -> node.kind <> Exe)
+
+let no_ext graph = Filterable.filter graph (fun node -> node.kind <> Ext)
+
 module Digraph = struct
   type t = (string, string) Hashtbl.t
   let create () : t = Hashtbl.create 100
