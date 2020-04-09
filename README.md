@@ -14,13 +14,13 @@ $ dune-deps | tred | dot -Tpng > deps.png
 
 Running dune-deps on itself gives us this dependency graph:
 
-![graph for dune-deps itself](deps.png)
+![graph for dune-deps itself](img/deps.png)
 
 This is the graph we obtain for the
 [source code of opam](https://github.com/ocaml/opam), an elaborate
 project of over 50K lines of code:
 
-![graph obtained for the opam project](opam-deps.png)
+![graph obtained for the opam project](img/opam-deps.png)
 
 Installation
 ==
@@ -102,10 +102,15 @@ This is useful to eliminate independent components that may clutter
 the view.
 
 This example restricts the graph to the dependencies and reverse
-dependencies of `foo-lib`:
+dependencies of the `opam-client` library:
+
 ```
-$ dune-deps -h foo-lib | tred | dot -Tpng > foo-lib-deps.png
+$ dune-deps -h opam-client | tred | dot -Tpng > opam-client.png
 ```
+
+![dependencies and reverse dependencies of opam-client](img/opam-client.png)
+
+Compare this with the full graph of `opam` shown above.
 
 Other options are provided for showing only the dependencies, or only
 the reverse dependencies. It is also possible to do so for multiple

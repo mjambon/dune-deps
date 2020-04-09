@@ -31,4 +31,5 @@ clean:
 .PHONY: graph deps.png
 graph: deps.png
 deps.png:
-	dune-deps src | tred | dot -Tpng > deps.png
+	mkdir -p img
+	dune-deps src | tred | dot -Tpng > img/deps.png
