@@ -10,12 +10,21 @@ type config = {
   roots : string list;
   no_exe : bool;
   no_ext : bool;
+  deps : string list;
+  revdeps : string list;
 }
 
-let optimistic_run {roots; no_exe; no_ext} =
-  Find.find_dune_files roots
-  |> Dune.load_files ~no_exe ~no_ext
-  |> Dot.print_graph
+let optimistic_run {roots; no_exe; no_ext; deps; revdeps} =
+  let graph =
+    Find.find_dune_files roots
+    |> Dune.load_files ~no_exe ~no_ext
+  in
+  let graph =
+    match deps, revdeps with
+    | [], [] -> graph
+    | _ -> Filter.deps_or_revdeps graph ~deps ~revdeps
+  in
+  Dot.print_graph graph
 
 let safe_run config =
   try optimistic_run config
@@ -54,14 +63,57 @@ let no_ext_term =
   in
   Arg.value (Arg.flag info)
 
+let hourglass_term =
+  let info =
+    Arg.info ["hourglass"; "h"]
+      ~docv:"NAME"
+      ~doc:"Select dependencies and reverse dependencies of that node. \
+            The resulting graph may have an hourglass shape \
+            if a node is selected in the middle of the graph. \
+            $(docv) is used to select the node. It is either a node ID or a \
+            label. \
+            The node ID is unique and can be found by generating an \
+            unfiltered graph with dune-deps. A label ID is what's displayed \
+            on the graph rendered by 'dot'. Please note that the format of \
+            either node ID or label is subject to change in future versions \
+            of dune-deps. Node selection searches $(docv) first among \
+            node IDs. If a node is found, then that node is selected. \
+            Otherwise, all nodes whose label matches $(docv) are selected."
+  in
+  Arg.value (Arg.opt_all Arg.string [] info)
+
+let deps_term =
+  let info =
+    Arg.info ["deps"; "d"]
+      ~docv:"NAME"
+      ~doc:"Same as --hourglass but select only the dependencies of the \
+            specified node(s)."
+  in
+  Arg.value (Arg.opt_all Arg.string [] info)
+
+let revdeps_term =
+  let info =
+    Arg.info ["revdeps"; "r"]
+      ~docv:"NAME"
+      ~doc:"Same as --hourglass but select only reverse dependencies of the \
+            specified node(s)."
+  in
+  Arg.value (Arg.opt_all Arg.string [] info)
+
 let cmdline_term =
-  let combine roots no_exe no_ext =
-    { roots; no_exe; no_ext }
+  let combine roots no_exe no_ext hourglass deps revdeps =
+    let deps, revdeps =
+      (deps @ hourglass), (revdeps @ hourglass)
+    in
+    { roots; no_exe; no_ext; deps; revdeps }
   in
   Term.(const combine
         $ roots_term
         $ no_exe_term
         $ no_ext_term
+        $ hourglass_term
+        $ deps_term
+        $ revdeps_term
        )
 
 let doc =
