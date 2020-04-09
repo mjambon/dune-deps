@@ -96,9 +96,20 @@ $ dune-deps src/lib-foo src/lib-bar src/lib-baz | tred | dot -Tpng > deps.png
 What uses or is used by a specific component?
 --
 
-This is work in progress (see https://github.com/mjambon/dune-deps/issues/5).
-The idea is to show only the graph nodes
-that are dependencies or reverse dependencies of a specific node.
+The `--hourglass` or `-h` option restricts the graph to the
+dependencies and reverse dependencies of the specified libraries.
+This is useful to eliminate independent components that may clutter
+the view.
+
+This example restricts the graph to the dependencies and reverse
+dependencies of `foo-lib`:
+```
+$ dune-deps -h foo-lib | tred | dot -Tpng > foo-lib-deps.png
+```
+
+Other options are provided for showing only the dependencies, or only
+the reverse dependencies. It is also possible to do so for multiple
+nodes of interest. See `dune-deps --help` for details.
 
 Is this external dependency really necessary?
 --
