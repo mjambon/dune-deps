@@ -9,10 +9,10 @@
 open Printf
 open Sexplib.Sexp
 
-let extract_node_kind entry : Graph.Node.kind option =
+let extract_node_kind entry : Dep_graph.Node.kind option =
   match entry with
-  | Atom ("executable" | "executables") :: _ -> Some Graph.Node.Exe
-  | Atom ("library" | "libraries") :: _ -> Some Graph.Node.Lib
+  | Atom ("executable" | "executables") :: _ -> Some Dep_graph.Node.Exe
+  | Atom ("library" | "libraries") :: _ -> Some Dep_graph.Node.Lib
   | _ -> None
 
 let find_list names sexp_list =
@@ -63,19 +63,19 @@ let read_node path get_index sexp_entry =
           let names = extract_names entry in
           let deps = extract_deps entry in
           List.map (fun name_string ->
-            let loc = { Graph.Loc.path; index = get_index () } in
+            let loc = { Dep_graph.Loc.path; index = get_index () } in
             let name =
               match kind with
-              | Graph.Node.Exe ->
-                  let id = Graph.Loc.id loc in
+              | Dep_graph.Node.Exe ->
+                  let id = Dep_graph.Loc.id loc in
                   let basename = name_string in
                   let path = (* dune file folder + executable name *)
                     Filename.concat (Filename.dirname path) basename in
-                  Graph.Name.Exe { id; basename; path }
-              | Graph.Node.Lib -> Graph.Name.Lib name_string
-              | Graph.Node.Ext -> assert false
+                  Dep_graph.Name.Exe { id; basename; path }
+              | Dep_graph.Node.Lib -> Dep_graph.Name.Lib name_string
+              | Dep_graph.Node.Ext -> assert false
             in
-            { Graph.Node.name; kind; deps; loc }
+            { Dep_graph.Node.name; kind; deps; loc }
           ) names
 
 let load_file path =
@@ -98,4 +98,5 @@ let load_file path =
 let load_files ~no_exe ~no_ext paths =
   List.map load_file paths
   |> List.flatten
-  |> Graph.fixup ~no_exe ~no_ext
+  |> Dep_graph.fixup ~no_exe ~no_ext
+  |> Filterable.of_dep_graph

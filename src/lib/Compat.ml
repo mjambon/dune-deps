@@ -17,4 +17,8 @@ module List = struct
       | Some y -> y :: acc
     ) [] l
     |> List.rev
+
+  let find_opt f l =
+    try Some (List.find f l)
+    with Not_found -> None
 end

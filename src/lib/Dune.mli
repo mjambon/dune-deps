@@ -12,4 +12,4 @@
 val load_files :
   no_exe:bool ->
   no_ext:bool ->
-  string list -> Graph.t
+  string list -> Filterable.t

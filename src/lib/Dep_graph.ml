@@ -1,5 +1,8 @@
 (*
    Types involved in the representation of the dependency graph.
+
+   This module is a bit messy and has no mli. For simple graph
+   transformations, use Filterable.t.
 *)
 
 open Printf
@@ -191,3 +194,24 @@ let fixup ~no_exe ~no_ext nodes =
     add_missing_nodes tbl;
   let nodes = Hashtbl.fold (fun _name node acc -> node :: acc) tbl [] in
   List.sort (fun (a : Node.t) b -> Name.compare a.name b.name) nodes
+
+(*
+   Generic function for removing nodes from the graph based on their name.
+   (works on a list of nodes rather than a hash table like some of the
+   code above.)
+*)
+let filter_nodes node_list match_name =
+  Compat.List.filter_map (fun (node : Node.t) ->
+    if match_name node.name then
+      let filtered_deps =
+        List.filter (fun dep_name ->
+          match_name (Name.Lib dep_name)
+        ) node.deps
+      in
+      let node = {
+        node with deps = filtered_deps
+      } in
+      Some node
+    else
+      None
+  ) node_list
