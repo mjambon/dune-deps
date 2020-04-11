@@ -16,15 +16,24 @@ type visit_tracker = {
 let create_visit_tracker () =
   let tbl = Hashtbl.create 100 in
   let get_id path =
-    (Unix.stat path).st_ino
+    try Some (Unix.stat path).st_ino
+    with _ -> None
   in
   let was_visited path =
-    Hashtbl.mem tbl (get_id path)
+    match get_id path with
+    | None -> true
+    | Some id -> Hashtbl.mem tbl id
   in
   let mark_visited path =
-    Hashtbl.replace tbl (get_id path) ()
+    match get_id path with
+    | None -> ()
+    | Some id -> Hashtbl.replace tbl id ()
   in
   { was_visited; mark_visited }
+
+let get_file_kind path =
+  try Some (Unix.stat path).st_kind
+  with _ -> None
 
 (* Find dune files starting from root folder or file *)
 let find ~accept_file_name ~accept_dir_name visit_tracker root =
@@ -34,8 +43,8 @@ let find ~accept_file_name ~accept_dir_name visit_tracker root =
     else (
       visit_tracker.mark_visited path;
       let name = Filename.basename path in
-      match Sys.is_directory path with
-      | true ->
+      match get_file_kind path with
+      | Some Unix.S_DIR ->
           if not (accept_dir_name name) then
             acc
           else
@@ -47,11 +56,14 @@ let find ~accept_file_name ~accept_dir_name visit_tracker root =
               |> List.map (fun name -> Filename.concat path name)
             in
             List.fold_left find acc children
-      | false ->
+      | Some Unix.S_REG ->
           if accept_file_name name then
             (path :: acc)
           else
             acc
+      | None | Some _ ->
+          (* leave broken symlinks and special files alone *)
+          acc
     )
   in
   find [] root
