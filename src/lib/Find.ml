@@ -7,6 +7,24 @@ type visit_tracker = {
   mark_visited : string -> unit;
 }
 
+let memoize f =
+  let tbl = Hashtbl.create 100 in
+  fun x ->
+    let run =
+      match Hashtbl.find_opt tbl x with
+      | Some run -> run
+      | None ->
+          let run = lazy (f x) in
+          Hashtbl.add tbl x run;
+          run
+    in
+    Lazy.force run
+
+(* Cache the results of the 'stat' syscall to speed things up.
+   (due to calling it multiple times on the same path, and having
+   possibly a lot of paths, and not so great caching at the OS level). *)
+let stat = memoize Unix.stat
+
 (* This is to avoid visiting the same file or directory multiple times.
 
    It can happen if the same folder or overlapping folders are specified
@@ -16,7 +34,7 @@ type visit_tracker = {
 let create_visit_tracker () =
   let tbl = Hashtbl.create 100 in
   let get_id path =
-    try Some (Unix.stat path).st_ino
+    try Some (stat path).st_ino
     with _ -> None
   in
   let was_visited path =
@@ -32,7 +50,7 @@ let create_visit_tracker () =
   { was_visited; mark_visited }
 
 let get_file_kind path =
-  try Some (Unix.stat path).st_kind
+  try Some (stat path).st_kind
   with _ -> None
 
 (* Find dune files starting from root folder or file *)
