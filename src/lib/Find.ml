@@ -11,7 +11,7 @@ let memoize f =
   let tbl = Hashtbl.create 100 in
   fun x ->
     let run =
-      match Hashtbl.find_opt tbl x with
+      match Compat.Hashtbl.find_opt tbl x with
       | Some run -> run
       | None ->
           let run = lazy (f x) in
