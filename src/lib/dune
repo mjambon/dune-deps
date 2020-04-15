@@ -1,4 +1,4 @@
 (library
   (name dune_deps)
-  (libraries sexplib str unix)
+  (libraries dune-files sexp str unix)
 )
