@@ -5,9 +5,10 @@
 set -eu
 
 for switch in $(cat .circleci/opam-switches); do
-  echo "Testing with opam switch $switch"
+  echo "Test dune-deps with opam switch $switch."
   git clean -dfx
   opam switch "$switch"
   eval $(opam env)
   make test
+  echo "Successfully tested dune-deps with opam switch $switch."
 done
