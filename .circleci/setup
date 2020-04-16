@@ -21,6 +21,11 @@ for switch in $(cat .circleci/opam-switches); do
   opam update
   opam install -y dune sexplib alcotest cmdliner
 
+  echo "Check for Bytes.blit_string"
+  echo 'let f = Bytes.blit_string' > /tmp/compat.ml
+  ocaml /tmp/compat.ml
+
+  echo "Install pp from git repo"
   opam install -y pp
   (
     cd /tmp/dune-file
