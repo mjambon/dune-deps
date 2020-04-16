@@ -1,65 +1,17 @@
 digraph {
-  "exe:./src/bin/dune:0" [label="dune-deps",shape=diamond]
-  "exe:./src/test/dune:0" [label="test<src/test>",shape=diamond]
-  "exe:./test/extra-proj/dune:0" [label="extra",shape=diamond]
-  "exe:./test/proj/bar/test/dune:0" [label="test<bar/test>",shape=diamond]
-  "exe:./test/proj/foo/test/dune:0" [label="test<foo/test>",shape=diamond]
-  "exe:./test/proj/dune:10" [label="lib-or-exe",shape=diamond]
-  "exe:./test/proj/dune:0" [label="prog1",shape=diamond]
-  "exe:./test/proj/dune:1" [label="prog2",shape=diamond]
-  "exe:./test/proj/dune:2" [label="prog3",shape=diamond]
-  "exe:./test/proj/dune:3" [label="prog4",shape=diamond]
-  "exe:./test/proj/dune:11" [label="test<proj>",shape=diamond]
-  "exe:./test/proj/dune:12" [label="test<proj>",shape=diamond]
+  "exe:src/bin/dune:0" [label="dune-deps",shape=diamond]
+  "exe:src/test/dune:0" [label="test",shape=diamond]
   "lib:alcotest" [label="alcotest",style=filled]
   "lib:cmdliner" [label="cmdliner",style=filled]
   "lib:dune-files" [label="dune-files",style=filled]
   "lib:dune_deps" [label="dune_deps"]
-  "lib:exclude-me" [label="exclude-me"]
-  "lib:ext1" [label="ext1",style=filled]
-  "lib:ext2" [label="ext2",style=filled]
-  "lib:ext3" [label="ext3",style=filled]
-  "lib:lib-or-exe" [label="lib-or-exe"]
-  "lib:lib1" [label="lib1"]
-  "lib:lib1-alt" [label="lib1-alt",style=filled]
-  "lib:lib2" [label="lib2"]
-  "lib:lib3" [label="lib3"]
-  "lib:lib4" [label="lib4"]
-  "lib:lib5" [label="lib5"]
-  "lib:more" [label="more"]
   "lib:str" [label="str",style=filled]
   "lib:unix" [label="unix",style=filled]
-  "exe:./src/bin/dune:0" -> "lib:dune_deps"
-  "exe:./src/bin/dune:0" -> "lib:cmdliner"
-  "exe:./src/test/dune:0" -> "lib:dune_deps"
-  "exe:./src/test/dune:0" -> "lib:alcotest"
-  "exe:./test/proj/bar/test/dune:0" -> "lib:lib1"
-  "exe:./test/proj/foo/test/dune:0" -> "lib:lib1"
-  "exe:./test/proj/dune:10" -> "lib:lib-or-exe"
-  "exe:./test/proj/dune:0" -> "lib:lib1"
-  "exe:./test/proj/dune:0" -> "lib:lib2"
-  "exe:./test/proj/dune:0" -> "lib:lib3"
-  "exe:./test/proj/dune:1" -> "lib:lib1"
-  "exe:./test/proj/dune:1" -> "lib:lib3"
-  "exe:./test/proj/dune:1" -> "lib:ext1"
-  "exe:./test/proj/dune:2" -> "lib:lib1"
-  "exe:./test/proj/dune:2" -> "lib:lib3"
-  "exe:./test/proj/dune:2" -> "lib:ext1"
-  "exe:./test/proj/dune:3" -> "lib:lib4"
-  "exe:./test/proj/dune:11" -> "lib:lib1"
-  "exe:./test/proj/dune:12" -> "lib:lib1-alt"
+  "exe:src/bin/dune:0" -> "lib:dune_deps"
+  "exe:src/bin/dune:0" -> "lib:cmdliner"
+  "exe:src/test/dune:0" -> "lib:dune_deps"
+  "exe:src/test/dune:0" -> "lib:alcotest"
   "lib:dune_deps" -> "lib:dune-files"
   "lib:dune_deps" -> "lib:str"
   "lib:dune_deps" -> "lib:unix"
-  "lib:lib2" -> "lib:lib4"
-  "lib:lib2" -> "lib:lib5"
-  "lib:lib2" -> "lib:ext2"
-  "lib:lib3" -> "lib:lib4"
-  "lib:lib3" -> "lib:lib5"
-  "lib:lib3" -> "lib:ext2"
-  "lib:lib4" -> "lib:lib1"
-  "lib:lib4" -> "lib:ext3"
-  "lib:lib5" -> "lib:lib1"
-  "lib:lib5" -> "lib:ext3"
-  "lib:more" -> "lib:lib1"
 }
