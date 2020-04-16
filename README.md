@@ -14,7 +14,7 @@ $ dune-deps | tred | dot -Tpng > deps.png
 
 Running dune-deps on itself gives us this dependency graph:
 
-![graph for dune-deps itself](img/deps.png)
+![graph for dune-deps itself](.deps/deps.png)
 
 This is the graph we obtain for the
 [source code of opam](https://github.com/ocaml/opam), an elaborate

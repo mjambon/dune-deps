@@ -1,0 +1,34 @@
+name: Dune dependency graph
+on: [push]
+jobs:
+  run:
+    name: Dune dependency graph
+    runs-on: [ubuntu-latest]
+    steps:
+    # Get a copy of the git repository to analyze.
+    - uses: actions/checkout@master
+
+    # Install curl, dot, tred.
+    - run: sudo apt-get update
+    - run: sudo apt-get install curl graphviz
+
+    # Install a precompiled binary of dune-deps.
+    - run: sudo curl -L -o /usr/bin/dune-deps https://github.com/mjambon/dune-deps/releases/download/v1.2.1/dune-deps-1.2.1-linux-x86_64-ubuntu-16.04
+    - run: echo "765c1ae498c2f66c042b5f3b63de4b40f83f18efee29d816a8c2355b9146684d  /usr/bin/dune-deps" | sha256sum -c
+    - run: sudo chmod 755 /usr/bin/dune-deps
+
+    # Run dune-deps on our checked-out git repo, producing an image.
+    # All output goes to the .deps folder.
+    #
+    - run: mkdir -p .deps
+    - run: dune-deps -x .git > .deps/deps.dot
+    - run: tred < .deps/deps.dot | dot -Tpng > .deps/deps.png
+
+    # Add the output to our git repo.
+    - run: git remote add github "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git"
+    - run: git pull github "$GITHUB_REF" --ff-only
+    - run: git add .deps
+    - run: git config user.name "Dune dependency graph GitHub Action"
+    - run: git config user.email "$GITHUB_ACTOR"@github
+    - run: git diff-index --quiet HEAD || git commit -m "Update dependency graph" .deps
+    - run: git push github HEAD:"$GITHUB_REF"
