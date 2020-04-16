@@ -3,7 +3,7 @@ digraph {
   "exe:src/test/dune:0" [label="test",shape=diamond]
   "lib:alcotest" [label="alcotest",style=filled]
   "lib:cmdliner" [label="cmdliner",style=filled]
-  "lib:dune-files" [label="dune-files",style=filled]
+  "lib:dune-file" [label="dune-file",style=filled]
   "lib:dune_deps" [label="dune_deps"]
   "lib:str" [label="str",style=filled]
   "lib:unix" [label="unix",style=filled]
@@ -11,7 +11,7 @@ digraph {
   "exe:src/bin/dune:0" -> "lib:cmdliner"
   "exe:src/test/dune:0" -> "lib:dune_deps"
   "exe:src/test/dune:0" -> "lib:alcotest"
-  "lib:dune_deps" -> "lib:dune-files"
+  "lib:dune_deps" -> "lib:dune-file"
   "lib:dune_deps" -> "lib:str"
   "lib:dune_deps" -> "lib:unix"
 }
