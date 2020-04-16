@@ -7,7 +7,26 @@
 *)
 
 open Printf
-open Sexplib.Sexp
+
+type sexp =
+  | Atom of string
+  | List of sexp list
+
+(*
+   Conversion from the dune AST to a simpler AST similar
+   to sexplib.
+
+   We could also keep the locations in the AST so as to emit better error
+   messages, but the benefits are not clear.
+*)
+let rec simplify (ast : Dune_files.t) : sexp =
+  match ast with
+  | Atom (A s) -> Atom s
+  | Quoted_string s -> Atom s
+  | List l -> List (List.map simplify l)
+  | Template template ->
+      (* not sure how to deal with templates or if it matters *)
+      Atom (Dune_files.Template.to_string template)
 
 let extract_node_kind entry : Dep_graph.Node.kind option =
   match entry with
@@ -79,14 +98,17 @@ let read_node path get_index sexp_entry =
           ) names
 
 let load_file path =
-  let sexp_entries =
-    try Sexplib.Sexp.load_sexps path
+  let entries =
+    try
+      Dune_files.Parser.load path ~mode:Many
+      |> List.map Dune_files.Ast.remove_locs
     with e ->
       failwith (
         sprintf "Cannot parse dune file %s: exception %s"
           path (Printexc.to_string e)
       )
   in
+  let sexp_entries = List.map simplify entries in
   let index = ref (-1) in
   let get_index () =
     incr index;
