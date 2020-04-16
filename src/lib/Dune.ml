@@ -102,10 +102,18 @@ let load_file path =
     try
       Dune_files.Parser.load path ~mode:Many
       |> List.map Dune_files.Ast.remove_locs
-    with e ->
-      failwith (
-        sprintf "Cannot parse dune file %s: exception %s"
-          path (Printexc.to_string e)
+    with
+    | Dune_files.Lexer.Parse_error (loc, msg) ->
+        let msg =
+          sprintf "%s\n%s"
+            (Dune_files__Loc.to_human_readable_location loc)
+            msg
+        in
+        failwith msg
+    | e ->
+        failwith (
+          sprintf "Cannot parse dune file %s: exception %s"
+            path (Printexc.to_string e)
       )
   in
   let sexp_entries = List.map simplify entries in
