@@ -76,6 +76,11 @@ The markdown syntax, for including an image in a `README.md` file, is:
 ![project dependencies](deps.png)
 ```
 
+You can [have this graph automatically created and
+updated](https://github.com/mjambon/dune-deps-action)
+if your project is hosted on GitHub. All you have to do is copy a config
+file into your project.
+
 How are these specific components related?
 --
 
