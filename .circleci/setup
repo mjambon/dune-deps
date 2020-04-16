@@ -11,7 +11,7 @@ opam repo add --all -k git github https://github.com/ocaml/opam-repository.git
 # temporary; use opam package when it becomes available
 (
   cd /tmp
-  git clone https://github.com/diml/dune-files.git
+  git clone https://github.com/diml/dune-file.git
 )
 
 for switch in $(cat .circleci/opam-switches); do
@@ -23,7 +23,7 @@ for switch in $(cat .circleci/opam-switches); do
 
   opam install -y pp
   (
-    cd /tmp/dune-files
+    cd /tmp/dune-file
     git clean -dfX
     make
     make install

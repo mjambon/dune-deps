@@ -1,4 +1,4 @@
 (library
   (name dune_deps)
-  (libraries dune-files str unix)
+  (libraries dune-file str unix)
 )

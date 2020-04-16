@@ -14,7 +14,7 @@ depends: [
   "cmdliner"
   "dune" {>= "2.1"}
   "ocaml"
-  "dune-files"
+  "dune-file"
 ]
 
 synopsis: "Show dependency graph of a multi-component dune project"
