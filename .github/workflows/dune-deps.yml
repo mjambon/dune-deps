@@ -21,7 +21,7 @@ jobs:
     # All output goes to the .deps folder.
     #
     - run: mkdir -p .deps
-    - run: dune-deps -x .git > .deps/deps.dot
+    - run: dune-deps -x .git src > .deps/deps.dot
     - run: tred < .deps/deps.dot | dot -Tpng > .deps/deps.png
 
     # Add the output to our git repo.
