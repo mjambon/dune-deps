@@ -8,6 +8,8 @@ jobs:
     docker:
       - image: mjambon/mj-ocaml:alpine
     working_directory: ~/dune-deps
+    environment:
+      DUNE_PROFILE: static
     steps:
       - checkout
       - run:
@@ -21,7 +23,7 @@ jobs:
           command: opam exec -- make test
       - store_artifacts:
           path: ~/dune-deps/_build/install/default/bin/dune-deps
-          destination: dune-deps-linux-x86_64
+          destination: dune-deps-linux-x86_64-static
   build_legacy:
     docker:
       - image: mjambon/mj-ocaml-4.02:alpine
