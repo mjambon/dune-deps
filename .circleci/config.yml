@@ -10,26 +10,33 @@ jobs:
     working_directory: ~/dune-deps
     steps:
       - checkout
-      - name: Install dependencies
-        run: ./.circleci/setup
-      - name: Build
-        run: opam exec -- make
-      - name: Test
-        run: opam exec -- make test
+      - run:
+          name: Install dependencies
+          command: ./.circleci/setup
+      - run:
+          name: Build
+          command: opam exec -- make
+      - run:
+          name: Test
+          command: opam exec -- make test
   build_legacy:
     docker:
       - image: mjambon/mj-ocaml-4.02:alpine
     working_directory: ~/dune-deps
     steps:
       - checkout
-      - name: Install dependencies
-        run: ./.circleci/setup
-      - name: Build
-        run: opam exec -- make
-      - name: Test
-        run: opam exec -- make test
+      - run:
+          name: Install dependencies
+          command: ./.circleci/setup
+      - run:
+          name: Build
+          command: opam exec -- make
+      - run:
+          name: Test
+          command: opam exec -- make test
 
 workflows:
+  version: 2
   build:
     jobs:
       - build
