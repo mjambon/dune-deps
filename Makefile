@@ -7,12 +7,18 @@
 # If 'make test' fails, visit test/ and work from there.
 #
 
+# Choices are 'default' or 'static'. See root 'dune' file.
+ifndef DUNE_PROFILE
+  DUNE_PROFILE = default
+endif
+export DUNE_PROFILE
+
 .PHONY: build
 build:
-	dune build @install
+	dune build @install --profile $(DUNE_PROFILE)
 
 .PHONY: test
-test: build
+test:
 	ln -sf ../_build/install/default/bin/dune-deps test/
 	dune exec src/test/test.exe
 	$(MAKE) -C test
