@@ -2,12 +2,35 @@
 # Circle CI configuration. Runs each time we push a new commit to Github.
 #
 version: 2.1
+
 jobs:
   build:
     docker:
-      - image: ocaml/opam2:debian-stable
+      - image: mjambon/mj-ocaml:alpine
     working_directory: ~/dune-deps
     steps:
       - checkout
-      - run: ./.circleci/setup
-      - run: ./.circleci/run-test
+      - name: Install dependencies
+        run: ./.circleci/setup
+      - name: Build
+        run: opam exec -- make
+      - name: Test
+        run: opam exec -- make test
+  build_legacy:
+    docker:
+      - image: mjambon/mj-ocaml-4.02:alpine
+    working_directory: ~/dune-deps
+    steps:
+      - checkout
+      - name: Install dependencies
+        run: ./.circleci/setup
+      - name: Build
+        run: opam exec -- make
+      - name: Test
+        run: opam exec -- make test
+
+workflows:
+  build:
+    jobs:
+      - build
+      - build_legacy
