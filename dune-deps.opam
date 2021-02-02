@@ -17,6 +17,10 @@ depends: [
   "sexplib"
 ]
 
+depopts: [
+  "conf-graphviz"
+]
+
 synopsis: "Show dependency graph of a multi-component dune project"
 
 description: """
