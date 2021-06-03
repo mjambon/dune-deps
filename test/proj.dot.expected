@@ -9,9 +9,13 @@ digraph {
   "exe:proj/dune:3" [label="prog4",shape=diamond]
   "exe:proj/dune:11" [label="test<proj>",shape=diamond]
   "exe:proj/dune:12" [label="test<proj>",shape=diamond]
+  "exe:proj/with-subdir/dune:2" [label="barnotsubdir",shape=diamond]
+  "exe:proj/with-subdir/dune:0" [label="foosubdir",shape=diamond]
   "lib:ext1" [label="ext1",style=filled]
   "lib:ext2" [label="ext2",style=filled]
   "lib:ext3" [label="ext3",style=filled]
+  "lib:foosubdirlib" [label="foosubdirlib"]
+  "lib:foosubdirlib-dep" [label="foosubdirlib-dep",style=filled]
   "lib:lib-or-exe" [label="lib-or-exe"]
   "lib:lib1" [label="lib1"]
   "lib:lib1-alt" [label="lib1-alt",style=filled]
@@ -35,6 +39,9 @@ digraph {
   "exe:proj/dune:3" -> "lib:lib4"
   "exe:proj/dune:11" -> "lib:lib1"
   "exe:proj/dune:12" -> "lib:lib1-alt"
+  "exe:proj/with-subdir/dune:2" -> "lib:foosubdirlib"
+  "exe:proj/with-subdir/dune:0" -> "lib:foosubdirlib"
+  "lib:foosubdirlib" -> "lib:foosubdirlib-dep"
   "lib:lib2" -> "lib:lib4"
   "lib:lib2" -> "lib:lib5"
   "lib:lib2" -> "lib:ext2"
