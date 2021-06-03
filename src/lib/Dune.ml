@@ -78,14 +78,41 @@ let read_node path get_index sexp_entry =
             { Dep_graph.Node.name; kind; deps; loc }
           ) names
 
+(*
+   'subdir' stanzas are inlined, and subdirectory names are discarded since
+   we don't need them.
+
+     (subdir
+       foo
+       (executable
+         (name foo)
+       )
+     )
+
+   becomes:
+
+     (executable
+       (name foo)
+     )
+*)
+let inline_subdirs orig_sexp_entries =
+  orig_sexp_entries
+  |> List.map (function
+    | List (Atom "subdir" :: Atom _dirname :: contents) -> contents
+    | x -> [x]
+  )
+  |> List.flatten
+
 let load_file path =
   let sexp_entries =
-    try Sexplib.Sexp.load_sexps path
-    with e ->
-      failwith (
-        sprintf "Cannot parse dune file %s: exception %s"
-          path (Printexc.to_string e)
-      )
+    (try Sexplib.Sexp.load_sexps path
+     with e ->
+       failwith (
+         sprintf "Cannot parse dune file %s: exception %s"
+           path (Printexc.to_string e)
+       )
+    )
+    |> inline_subdirs
   in
   let index = ref (-1) in
   let get_index () =

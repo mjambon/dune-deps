@@ -1,0 +1,23 @@
+; Check support for the 'subdir' stanza
+
+(subdir
+  foosubdir
+  (executable
+    (name foosubdir)
+    (libraries foosubdirlib)
+  )
+  (library
+    (name foosubdirlib)
+    (libraries foosubdirlib-dep)
+    (flags
+      (:standard --hello))
+    (preprocess
+      (pps ppx_trace))
+    (inline_tests)
+  )
+)
+
+(executable
+  (name barnotsubdir)
+  (libraries foosubdirlib)
+)
