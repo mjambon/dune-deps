@@ -16,6 +16,8 @@ Running dune-deps on itself gives us this dependency graph:
 
 ![graph for dune-deps itself](img/deps.png)
 
+Legend: diamond = executable, white ellipse = local library, grey ellipse = external library
+
 This is the graph we obtain for the
 [source code of opam](https://github.com/ocaml/opam), an elaborate
 project of over 50K lines of code:
