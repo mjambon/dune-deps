@@ -161,15 +161,15 @@ let man = [
 
 let parse_command_line () =
   let info =
-    Term.info
+    Cmd.info
       ~doc
       ~man
       "dune-deps"
   in
-  match Term.eval (cmdline_term, info) with
-  | `Error _ -> exit 1
-  | `Version | `Help -> exit 0
-  | `Ok config -> config
+  match Cmd.eval_value (Cmd.v info cmdline_term) with
+  | Error _ -> exit 1
+  | Ok (`Version | `Help) -> exit 0
+  | Ok (`Ok config) -> config
 
 let main () =
   Printexc.record_backtrace true;
