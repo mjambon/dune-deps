@@ -1,4 +1,4 @@
-(executable
+(test
   (name test)
   (libraries dune_deps alcotest)
 )
