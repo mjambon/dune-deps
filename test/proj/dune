@@ -45,7 +45,7 @@
 
 (executable
   (name test)
-  (libraries lib1)
+  (libraries priv_lib1)
 )
 
 ; Other executable with the same path. Don't know if that's even possible
