@@ -56,8 +56,8 @@ let extract_names public_private entry =
         invalid_arg "stanzas has a different number of names and public_names";
       (* https://dune.readthedocs.io/en/latest/reference/dune/executable.html#executables 
          > Moreover, you can use - for executables that shouldn’t be installed. *)
-      List.iter2 (fun p n -> if p <> "-" then Hashtbl.add public_private p n) ps ns;
-      ns
+      List.iter2 (fun n p -> if p <> "-" then Hashtbl.add public_private n p) ns ps;
+      ps
 
 let extract_deps entry =
   match find_list ["libraries"] entry with
@@ -139,5 +139,5 @@ let load_files paths =
   let public_private = Hashtbl.create 16 in
   List.map (load_file public_private) paths
   |> List.flatten
-  |> Dep_graph.fixup
+  |> Dep_graph.fixup public_private
   |> Filterable.of_dep_graph public_private

@@ -124,11 +124,11 @@ let extract_missing_deps tbl =
 (*
    Add unknown dependencies as nodes representing external libraries.
 *)
-let add_missing_nodes tbl =
+let add_missing_nodes public_private tbl =
   let missing_deps = extract_missing_deps tbl in
   List.iter (fun (dep_name, loc) ->
     let name = Name.Lib dep_name in
-    if not (Hashtbl.mem tbl name) then
+    if not (Hashtbl.mem tbl name) && not (Hashtbl.mem public_private dep_name) then
       let node : Node.t = {
         name;
         kind = Ext;
@@ -150,9 +150,9 @@ let add_missing_nodes tbl =
 
    This also checks that there are no duplicate nodes.
 *)
-let fixup nodes =
+let fixup public_private nodes =
   let tbl = Hashtbl.create 100 in
   List.iter (add_node tbl) nodes;
-  add_missing_nodes tbl;
+  add_missing_nodes public_private tbl;
   let nodes = Hashtbl.fold (fun _name node acc -> node :: acc) tbl [] in
   List.sort (fun (a : Node.t) b -> Name.compare a.name b.name) nodes
