@@ -12,6 +12,7 @@ digraph {
   "lib:lib4" [label="lib4"]
   "lib:lib5" [label="lib5"]
   "lib:more" [label="more"]
+  "lib:priv_lib1" [label="priv_lib1"]
   "lib:foosubdirlib" -> "lib:foosubdirlib-dep"
   "lib:lib2" -> "lib:lib4"
   "lib:lib2" -> "lib:lib5"

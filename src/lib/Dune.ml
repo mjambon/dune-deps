@@ -36,15 +36,15 @@ let extract_strings sexp_list =
 let extract_names entry =
   let public_names =
     match find_list ["public_names"; "public_name"] entry with
-    | None -> None
-    | Some l -> Some (extract_strings l)
+    | None -> []
+    | Some l -> extract_strings l
   in
-  match public_names with
-  | Some names -> names
-  | None ->
-      match find_list ["names"; "name"] entry with
-      | None -> []
-      | Some l -> extract_strings l
+  let names =
+    match find_list ["names"; "name"] entry with
+    | None -> []
+    | Some l -> extract_strings l
+  in
+  List.sort_uniq String.compare (public_names @ names)
 
 let extract_deps entry =
   match find_list ["libraries"] entry with
