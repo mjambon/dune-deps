@@ -10,6 +10,7 @@
 
 (executables
   (names prog2 prog3)
+  (public_names pppprog2 pppppprog3)
   (libraries lib1 lib3 ext1)
 )
 

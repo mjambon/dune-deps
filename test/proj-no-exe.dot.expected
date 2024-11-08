@@ -5,7 +5,7 @@ digraph {
   "lib:foosubdirlib" [label="foosubdirlib"]
   "lib:foosubdirlib-dep" [label="foosubdirlib-dep",style=filled]
   "lib:lib-or-exe" [label="lib-or-exe"]
-  "lib:lib1" [label="lib1"]
+  "lib:lib1" [label="lib1",style=filled]
   "lib:lib1-alt" [label="lib1-alt",style=filled]
   "lib:lib2" [label="lib2"]
   "lib:lib3" [label="lib3"]
@@ -20,9 +20,9 @@ digraph {
   "lib:lib3" -> "lib:lib4"
   "lib:lib3" -> "lib:lib5"
   "lib:lib3" -> "lib:ext2"
-  "lib:lib4" -> "lib:lib1"
+  "lib:lib4" -> "lib:priv_lib1"
   "lib:lib4" -> "lib:ext3"
-  "lib:lib5" -> "lib:lib1"
+  "lib:lib5" -> "lib:priv_lib1"
   "lib:lib5" -> "lib:ext3"
-  "lib:more" -> "lib:lib1"
+  "lib:more" -> "lib:priv_lib1"
 }

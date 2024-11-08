@@ -71,14 +71,18 @@ let remove_dead_edges nodes =
     { node with edges }
   ) nodes
 
-let of_dep_graph nodes : t =
+let of_dep_graph public_private nodes : t =
   let open Dep_graph in
   let get_node_label = prepare_labels nodes in
   List.map (fun node ->
     {
       id = Node.(node.name) |> Name.id;
       label = get_node_label node;
-      edges = List.map (fun name -> Name.id (Name.Lib name)) Node.(node.deps);
+      edges = List.map (fun name ->
+        match Hashtbl.find_opt public_private name with
+        | None -> Name.id (Name.Lib name)
+        | Some name -> Name.id (Name.Lib name)
+        ) Node.(node.deps);
       important = false;
       kind = Node.(node.kind);
     }
