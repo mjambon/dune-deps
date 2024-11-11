@@ -7,7 +7,16 @@ dev-repo: "git+https://github.com/mjambon/dune-deps.git"
 license: "BSD-3-Clause"
 
 build: [
-  ["dune" "build" "-p" name "-j" jobs]
+  [
+    "dune"
+    "build"
+    "-p"
+    name
+    "-j"
+    jobs
+    "@install"
+    "@runtest" {with-test}
+  ]
 ]
 
 depends: [
@@ -15,6 +24,7 @@ depends: [
   "dune" {>= "2.1"}
   "ocaml"
   "sexplib"
+  "alcotest" {with-test}
 ]
 
 depopts: [

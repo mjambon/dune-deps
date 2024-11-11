@@ -33,18 +33,31 @@ let extract_strings sexp_list =
     | List _ -> None
   ) sexp_list
 
-let extract_names entry =
+let extract_names public_private entry =
   let public_names =
     match find_list ["public_names"; "public_name"] entry with
     | None -> None
     | Some l -> Some (extract_strings l)
   in
-  match public_names with
-  | Some names -> names
-  | None ->
-      match find_list ["names"; "name"] entry with
-      | None -> []
-      | Some l -> extract_strings l
+  let names =
+    match find_list ["names"; "name"] entry with
+    | None -> None
+    | Some l -> Some (extract_strings l)
+  in
+  match public_names, names with
+  | None, None -> []
+  | Some names, None | None, Some names -> names
+  | Some ps, Some ns ->
+      if List.compare_lengths ps ns <> 0 then
+        (* https://dune.readthedocs.io/en/latest/reference/dune/executable.html#executables 
+           > [(public_names <names>)] describes under what name to install each
+           > executable. The list of names must be of the same length as the
+           > list in the [(names ...)] field. *)
+        invalid_arg "stanzas has a different number of names and public_names";
+      (* https://dune.readthedocs.io/en/latest/reference/dune/executable.html#executables 
+         > Moreover, you can use - for executables that shouldn’t be installed. *)
+      List.iter2 (fun n p -> if p <> "-" then Hashtbl.add public_private n p) ns ps;
+      ps
 
 let extract_deps entry =
   match find_list ["libraries"] entry with
@@ -53,14 +66,14 @@ let extract_deps entry =
 
 (* 'get_index' is a function that returns a fresh numeric identifier for the
    source file 'path'. *)
-let read_node path get_index sexp_entry =
+let read_node public_private path get_index sexp_entry =
   match sexp_entry with
   | Atom _ -> []
   | List entry ->
       match extract_node_kind entry with
       | None -> []
       | Some kind ->
-          let names = extract_names entry in
+          let names = extract_names public_private entry in
           let deps = extract_deps entry in
           List.map (fun name_string ->
             let loc = { Dep_graph.Loc.path; index = get_index () } in
@@ -103,7 +116,7 @@ let inline_subdirs orig_sexp_entries =
   )
   |> List.flatten
 
-let load_file path =
+let load_file public_private path =
   let sexp_entries =
     (try Sexplib.Sexp.load_sexps path
      with e ->
@@ -119,11 +132,12 @@ let load_file path =
     incr index;
     !index
   in
-  List.map (read_node path get_index) sexp_entries
+  List.map (read_node public_private path get_index) sexp_entries
   |> List.flatten
 
 let load_files paths =
-  List.map load_file paths
+  let public_private = Hashtbl.create 16 in
+  List.map (load_file public_private) paths
   |> List.flatten
-  |> Dep_graph.fixup
-  |> Filterable.of_dep_graph
+  |> Dep_graph.fixup public_private
+  |> Filterable.of_dep_graph public_private

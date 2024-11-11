@@ -19,7 +19,7 @@ type node = private {
 
 (** Ingest a dependency graph. Node IDs must be unique or [Invalid_argument]
     is raised. *)
-val of_dep_graph : Dep_graph.t -> t
+val of_dep_graph : (string, string) Hashtbl.t -> Dep_graph.t -> t
 
 (** Return the graph as a list of nodes.
     Any edge pointing to an undeclared node is discarded. *)

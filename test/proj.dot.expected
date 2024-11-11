@@ -3,9 +3,9 @@ digraph {
   "exe:proj/bar/test/dune:0" [label="test<bar/test>",shape=diamond]
   "exe:proj/foo/test/dune:0" [label="test<foo/test>",shape=diamond]
   "exe:proj/dune:10" [label="lib-or-exe",shape=diamond]
+  "exe:proj/dune:2" [label="pppppprog3",shape=diamond]
+  "exe:proj/dune:1" [label="pppprog2",shape=diamond]
   "exe:proj/dune:0" [label="prog1",shape=diamond]
-  "exe:proj/dune:1" [label="prog2",shape=diamond]
-  "exe:proj/dune:2" [label="prog3",shape=diamond]
   "exe:proj/dune:3" [label="prog4",shape=diamond]
   "exe:proj/dune:11" [label="test<proj>",shape=diamond]
   "exe:proj/dune:12" [label="test<proj>",shape=diamond]
@@ -27,15 +27,15 @@ digraph {
   "exe:proj/bar/test/dune:0" -> "lib:lib1"
   "exe:proj/foo/test/dune:0" -> "lib:lib1"
   "exe:proj/dune:10" -> "lib:lib-or-exe"
-  "exe:proj/dune:0" -> "lib:lib1"
-  "exe:proj/dune:0" -> "lib:lib2"
-  "exe:proj/dune:0" -> "lib:lib3"
-  "exe:proj/dune:1" -> "lib:lib1"
-  "exe:proj/dune:1" -> "lib:lib3"
-  "exe:proj/dune:1" -> "lib:ext1"
   "exe:proj/dune:2" -> "lib:lib1"
   "exe:proj/dune:2" -> "lib:lib3"
   "exe:proj/dune:2" -> "lib:ext1"
+  "exe:proj/dune:1" -> "lib:lib1"
+  "exe:proj/dune:1" -> "lib:lib3"
+  "exe:proj/dune:1" -> "lib:ext1"
+  "exe:proj/dune:0" -> "lib:lib1"
+  "exe:proj/dune:0" -> "lib:lib2"
+  "exe:proj/dune:0" -> "lib:lib3"
   "exe:proj/dune:3" -> "lib:lib4"
   "exe:proj/dune:11" -> "lib:lib1"
   "exe:proj/dune:12" -> "lib:lib1-alt"
