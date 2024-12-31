@@ -29,8 +29,8 @@ let find_list names sexp_list =
 
 let extract_strings sexp_list =
   Compat.List.filter_map (function
-    | Atom s -> Some s
-    | List _ -> None
+    | Atom s | List [Atom "re_export"; Atom s] -> Some s
+    | _ -> None
   ) sexp_list
 
 let extract_names public_private entry =
