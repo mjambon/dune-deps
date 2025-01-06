@@ -39,3 +39,11 @@ graph: deps.png
 deps.png:
 	mkdir -p img
 	dune-deps src | tred | dot -Tpng > img/deps.png
+
+# This is only part of the release process.
+# See complete release instructions in CONTRIBUTING.md.
+#
+.PHONY: opam-release
+opam-release:
+	dune-release tag
+	dune-release bistro
