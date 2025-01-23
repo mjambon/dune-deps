@@ -3,3 +3,5 @@
   (flags (:standard)))
  (static
   (flags (:standard -ccopt -static))))
+
+(dirs :standard \ test*)
