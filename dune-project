@@ -20,7 +20,7 @@ multiple libraries or executables. It allows the developer to visualize
 the dependencies between the various components of a project.")
   (depends
     (ocaml (>= 4.08.0))
-    cmdliner
+    (cmdliner (>= 1.1.1))
     sexplib
     (alcotest :with-test)
   )
