@@ -1,4 +1,5 @@
 (lang dune 3.0)
+(name dune-deps)
 
 (generate_opam_files)
 (license "BSD-3-Clause")
