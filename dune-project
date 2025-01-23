@@ -4,7 +4,7 @@
 (generate_opam_files)
 (license "BSD-3-Clause")
 (homepage "https://github.com/mjambon/dune-deps")
-(bug_reports "https://github.com/mjambon/dune-deps/issues")
+(source (github mjambon/dune-deps))
 
 ; Specify one or more maintainers and authors
 (maintainers "Martin Jambon <martin@mjambon.com>")
