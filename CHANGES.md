@@ -1,3 +1,8 @@
+dev
+---
+
+* Expose the internal library to allow building of custom tools.
+
 1.4.0 (2025-01-22)
 ------------------
 
