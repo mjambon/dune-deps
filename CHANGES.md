@@ -1,7 +1,7 @@
-dev
----
+1.5.0 (2025-05-06)
+------------------
 
-* Expose the internal library to allow building of custom tools.
+* Expose the internal library to allow building of custom tools (#33).
 
 1.4.0 (2025-01-22)
 ------------------
