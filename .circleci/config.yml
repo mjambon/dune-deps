@@ -6,7 +6,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: ocaml/opam:alpine-3.12-ocaml.5.3
+      - image: mjambon/mj-ocaml:alpine
     working_directory: ~/dune-deps
     environment:
       DUNE_PROFILE: static
@@ -26,7 +26,7 @@ jobs:
           destination: dune-deps-linux-x86_64-static
   build_legacy:
     docker:
-      - image: ocaml/opam:alpine-3.12-ocaml.4.08
+      - image: mjambon/mj-ocaml-4.08:alpine
     working_directory: ~/dune-deps
     steps:
       - checkout
